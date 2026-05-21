@@ -1,0 +1,15 @@
+node_modules
+_dist
+_dist/*
+_dist
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+.DS_Store
+.env
+.env.local
+.vscode
+dist
+coverage
+*.log
+docker-compose.override.yml
