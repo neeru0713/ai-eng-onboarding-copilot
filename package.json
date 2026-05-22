@@ -1,0 +1,26 @@
+{
+  "name": "ai-eng-onboarding-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "ingest": "ts-node src/ingestion/index.ts"
+  },
+  "dependencies": {
+    "@octokit/rest": "^22.0.0",
+    "dotenv": "^16.3.1",
+    "openai": "^4.0.0",
+    "pg": "^8.11.0",
+    "pgvector": "^0.2.1",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "@types/node": "^20.11.0"
+  }
+}
