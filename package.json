@@ -6,16 +6,21 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "ingest": "ts-node src/ingestion/index.ts"
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "ingest": "node --loader ts-node/esm src/ingestion/index.ts"
   },
   "dependencies": {
+    "@octokit/auth-token": "^6.0.0",
     "@octokit/rest": "^22.0.0",
     "dotenv": "^16.3.1",
     "openai": "^4.0.0",
     "pg": "^8.11.0",
     "pgvector": "^0.2.1",
-    "zod": "^3.22.0"
+    "zod": "^3.22.0",
+    "wink-bm25-text-search": "^3.0.0",
+    "@anthropic-ai/sdk": "^0.4.0",
+    "@langchain/openai": "^0.1.0",
+    "vitest": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
