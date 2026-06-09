@@ -5,7 +5,7 @@ export const chunkSchema = z.object({
   filePath: z.string(),
   startLine: z.number().int().positive(),
   text: z.string(),
-  source: z.literal('github'),
+  source: z.enum(['code', 'confluence', 'pr', 'github']),
   commitSha: z.string().optional(),
 });
 

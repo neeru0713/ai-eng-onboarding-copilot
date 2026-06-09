@@ -1,24 +1,46 @@
 import { crawlGitHubRepo } from './githubCrawler.js';
 import { chunkFiles } from './chunker.js';
 import { embedChunks } from './embedder.js';
+import { crawlPRs } from './prCrawler.js';
 
-async function main() {
+import { fileURLToPath } from 'url';
+
+export async function runIngestion() {
   console.log('Starting ingestion pipeline...');
 
+  // 1. Code Ingestion
+  console.log('\n--- Ingesting Repository Code ---');
   const filePaths = await crawlGitHubRepo();
   console.log('crawlGitHubRepo returned files:', filePaths.length);
-  console.log('Sample file paths:', filePaths.slice(0, 10).map((file) => file.path));
 
-  const chunks = await chunkFiles(filePaths);
-  console.log('chunkFiles returned chunks:', chunks.length);
-  console.log('Sample chunks:', chunks.slice(0, 5).map((chunk) => ({ filePath: chunk.filePath, startLine: chunk.startLine, textLength: chunk.text.length })));
+  const codeChunks = await chunkFiles(filePaths);
+  console.log('chunkFiles returned chunks:', codeChunks.length);
 
-  await embedChunks(chunks);
+  if (codeChunks.length > 0) {
+    await embedChunks(codeChunks);
+  }
 
-  console.log('Ingestion scaffold finished.');
+  // 2. PR Ingestion
+  console.log('\n--- Ingesting Pull Requests ---');
+  try {
+    const prChunks = await crawlPRs();
+    if (prChunks.length > 0) {
+      await embedChunks(prChunks);
+    } else {
+      console.log('No PRs found to ingest.');
+    }
+  } catch (err: any) {
+    console.error('PR Ingestion failed:', err.message);
+  }
+
+  console.log('\nIngestion pipeline finished successfully.');
 }
 
-main().catch((error) => {
-  console.error('Ingestion failed:', error);
-  process.exit(1);
-});
+// Check if this module is being run directly from the command line
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  runIngestion().catch((error) => {
+    console.error('Ingestion failed:', error);
+    process.exit(1);
+  });
+}

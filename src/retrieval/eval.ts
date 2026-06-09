@@ -74,7 +74,7 @@ export async function runEval() {
   try {
     await bm25.initFromPostgres();
     bm25.index();
-  } catch (e) {
+  } catch (e: any) {
     console.warn("BM25 init failed:", e.message);
   }
 
@@ -86,8 +86,8 @@ export async function runEval() {
     const bres = bm25.search(item.question, 20);
 
     const map = new Map<number, any>();
-    vres.forEach((r, i) => map.set(r.id, { ...r, vscore: 1 / (i + 1) }));
-    bres.forEach((r, i) => {
+    vres.forEach((r: any, i: number) => map.set(r.id, { ...r, vscore: 1 / (i + 1) }));
+    bres.forEach((r: any) => {
       const ex = map.get(r.id);
       if (ex) {
         ex.bscore = r.score;

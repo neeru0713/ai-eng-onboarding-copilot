@@ -29,7 +29,7 @@ export async function chunkFiles(files: GitHubFile[]): Promise<Chunk[]> {
           filePath: file.path,
           startLine: chunkStartLine,
           text: buffer,
-          source: 'github',
+          source: 'code',
           commitSha: file.commitSha,
         });
 
@@ -51,7 +51,7 @@ export async function chunkFiles(files: GitHubFile[]): Promise<Chunk[]> {
         filePath: file.path,
         startLine: chunkStartLine,
         text: buffer,
-        source: 'github',
+        source: 'code',
         commitSha: file.commitSha,
       });
       console.log(`  Final chunk for ${file.path}: startLine=${chunkStartLine}, length=${buffer.length}`);
