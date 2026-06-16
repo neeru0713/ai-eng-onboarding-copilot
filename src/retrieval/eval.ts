@@ -1,6 +1,4 @@
-import { vectorSearch } from "./vectorSearch.js";
-import { BM25Search } from "./bm25Search.js";
-import { rerank } from "./reranker.js";
+import { queryRAG, getCacheStats, resetCacheStats } from "./rag.js";
 
 type EvalItem = { question: string; expectedFile: string };
 
@@ -69,54 +67,55 @@ const QUESTIONS: EvalItem[] = [
   },
 ];
 
+import { fileURLToPath } from "url";
+
 export async function runEval() {
-  const bm25 = new BM25Search();
-  try {
-    await bm25.initFromPostgres();
-    bm25.index();
-  } catch (e: any) {
-    console.warn("BM25 init failed:", e.message);
-  }
+  console.log("=== Running Evaluation - Run 1 (Cold Cache) ===");
+  resetCacheStats();
 
   let hits = 0;
 
   for (const item of QUESTIONS) {
     console.log("Evaluating:", item.question);
-    const vres = await vectorSearch(item.question, 20);
-    const bres = bm25.search(item.question, 20);
-
-    const map = new Map<number, any>();
-    vres.forEach((r: any, i: number) => map.set(r.id, { ...r, vscore: 1 / (i + 1) }));
-    bres.forEach((r: any) => {
-      const ex = map.get(r.id);
-      if (ex) {
-        ex.bscore = r.score;
-      } else {
-        map.set(r.id, { ...r, bscore: r.score });
-      }
-    });
-
-    const merged = Array.from(map.values()).map((m) => ({
-      id: m.id,
-      file_path: m.file_path,
-      text: m.text,
-      score: (m.vscore || 0) * 0.6 + (m.bscore || 0) * 0.4,
-    }));
-
-    merged.sort((a, b) => b.score - a.score);
-    const top20 = merged.slice(0, 20);
-    const top5 = await rerank(item.question, top20, 5);
-
-    const found = top5.some((t) => t.file_path === item.expectedFile);
-    if (found) hits += 1;
-    console.log("Expected:", item.expectedFile, "Found in top5?", found);
+    try {
+      const res = await queryRAG(item.question);
+      const found = res.sources.some((t: any) => t.file_path === item.expectedFile);
+      if (found) hits += 1;
+      console.log("Expected:", item.expectedFile, "Found in top5?", found);
+    } catch (e: any) {
+      console.error(`Evaluation query failed for "${item.question}":`, e.message);
+    }
   }
 
   const recall = hits / QUESTIONS.length;
-  console.log(`\nRecall@5: ${recall.toFixed(2)} (${hits}/${QUESTIONS.length})`);
+  console.log(`\nRun 1 Recall@5: ${recall.toFixed(2)} (${hits}/${QUESTIONS.length})`);
+  console.log(`Run 1 Cache Stats:`, getCacheStats());
+
+  console.log("\n=== Running Evaluation - Run 2 (Warm Cache) ===");
+  let secondRunHits = 0;
+
+  for (const item of QUESTIONS) {
+    console.log("Evaluating (Run 2):", item.question);
+    const startHits = getCacheStats().cacheHits;
+    try {
+      await queryRAG(item.question);
+      const endHits = getCacheStats().cacheHits;
+      if (endHits > startHits) {
+        secondRunHits += 1;
+      }
+    } catch (e: any) {
+      console.error(`Evaluation query failed on Run 2 for "${item.question}":`, e.message);
+    }
+  }
+
+  const cacheHitRate = (secondRunHits / QUESTIONS.length) * 100;
+  console.log(`\nRun 2 Cache Hit Rate: ${cacheHitRate.toFixed(2)}% (${secondRunHits}/${QUESTIONS.length})`);
+  console.log(`Overall Cache Stats:`, getCacheStats());
+
   return recall;
 }
 
-if (require.main === module) {
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
   runEval().catch((e) => console.error(e));
 }

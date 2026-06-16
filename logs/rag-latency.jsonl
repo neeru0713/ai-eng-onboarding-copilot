@@ -1,0 +1,80 @@
+{"query":"where does routing happen?","latencyMs":27,"cacheHit":false,"retrievedChunks":["src/index.ts"]}
+{"query":"how are chunks embedded?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the chunker?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/chunker.ts"]}
+{"query":"how is github crawled?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/githubCrawler.ts"]}
+{"query":"what does schema define?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"how do we build prompts?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"where is the CLI?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/cli.ts"]}
+{"query":"where are embeddings stored?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"how do we start the app?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/index.ts"]}
+{"query":"how to run tests?","latencyMs":1,"cacheHit":false,"retrievedChunks":["package.json"]}
+{"query":"which model is used for embeddings?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where is bm25 index built?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/index.ts","src/retrieval/bm25Search.ts"]}
+{"query":"how is reranking implemented?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/retrieval/reranker.ts"]}
+{"query":"where are chunk texts stored?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the prompt builder?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"how to run the CLI","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/cli.ts"]}
+{"query":"what is the README about?","latencyMs":1,"cacheHit":false,"retrievedChunks":["README.md"]}
+{"query":"where are ingestion helpers?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/index.ts"]}
+{"query":"where to find schema types?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"where is the embed endpoint?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where does routing happen?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/index.ts"]}
+{"query":"how are chunks embedded?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the chunker?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/chunker.ts"]}
+{"query":"how is github crawled?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/githubCrawler.ts"]}
+{"query":"what does schema define?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"how do we build prompts?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"where is the CLI?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/cli.ts"]}
+{"query":"where are embeddings stored?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"how do we start the app?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/index.ts"]}
+{"query":"how to run tests?","latencyMs":0,"cacheHit":true,"retrievedChunks":["package.json"]}
+{"query":"which model is used for embeddings?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where is bm25 index built?","latencyMs":3,"cacheHit":true,"retrievedChunks":["src/index.ts","src/retrieval/bm25Search.ts"]}
+{"query":"how is reranking implemented?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/retrieval/reranker.ts"]}
+{"query":"where are chunk texts stored?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the prompt builder?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"how to run the CLI","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/cli.ts"]}
+{"query":"what is the README about?","latencyMs":0,"cacheHit":true,"retrievedChunks":["README.md"]}
+{"query":"where are ingestion helpers?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/index.ts"]}
+{"query":"where to find schema types?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"where is the embed endpoint?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where does routing happen?","latencyMs":29,"cacheHit":false,"retrievedChunks":["src/index.ts"]}
+{"query":"how are chunks embedded?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the chunker?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/ingestion/chunker.ts"]}
+{"query":"how is github crawled?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/githubCrawler.ts"]}
+{"query":"what does schema define?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"how do we build prompts?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"where is the CLI?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/cli.ts"]}
+{"query":"where are embeddings stored?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"how do we start the app?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/index.ts"]}
+{"query":"how to run tests?","latencyMs":1,"cacheHit":false,"retrievedChunks":["package.json"]}
+{"query":"which model is used for embeddings?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where is bm25 index built?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/index.ts","src/retrieval/bm25Search.ts"]}
+{"query":"how is reranking implemented?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/retrieval/reranker.ts"]}
+{"query":"where are chunk texts stored?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the prompt builder?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"how to run the CLI","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/cli.ts"]}
+{"query":"what is the README about?","latencyMs":1,"cacheHit":false,"retrievedChunks":["README.md"]}
+{"query":"where are ingestion helpers?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/index.ts"]}
+{"query":"where to find schema types?","latencyMs":1,"cacheHit":false,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"where is the embed endpoint?","latencyMs":0,"cacheHit":false,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where does routing happen?","latencyMs":1,"cacheHit":true,"retrievedChunks":["src/index.ts"]}
+{"query":"how are chunks embedded?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the chunker?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/chunker.ts"]}
+{"query":"how is github crawled?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/githubCrawler.ts"]}
+{"query":"what does schema define?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"how do we build prompts?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"where is the CLI?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/cli.ts"]}
+{"query":"where are embeddings stored?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"how do we start the app?","latencyMs":1,"cacheHit":true,"retrievedChunks":["src/index.ts"]}
+{"query":"how to run tests?","latencyMs":1,"cacheHit":true,"retrievedChunks":["package.json"]}
+{"query":"which model is used for embeddings?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}
+{"query":"where is bm25 index built?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/index.ts","src/retrieval/bm25Search.ts"]}
+{"query":"how is reranking implemented?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/retrieval/reranker.ts"]}
+{"query":"where are chunk texts stored?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts","src/ingestion/chunker.ts"]}
+{"query":"where is the prompt builder?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/generation/promptBuilder.ts"]}
+{"query":"how to run the CLI","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/cli.ts"]}
+{"query":"what is the README about?","latencyMs":0,"cacheHit":true,"retrievedChunks":["README.md"]}
+{"query":"where are ingestion helpers?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/index.ts"]}
+{"query":"where to find schema types?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/schema.ts"]}
+{"query":"where is the embed endpoint?","latencyMs":0,"cacheHit":true,"retrievedChunks":["src/ingestion/embedder.ts"]}

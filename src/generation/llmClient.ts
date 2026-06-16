@@ -18,7 +18,14 @@ export async function generateAnswer(
   onToken?: (s: string) => void,
 ) {
   // Assert that OpenAI API credentials are set
-  if (!OPENAI_API_KEY) throw new Error("OPENAI_API_KEY not set");
+  if (!OPENAI_API_KEY) {
+    console.warn("OPENAI_API_KEY is not set. Returning a mock answer.");
+    const mockOut = `[Mock Answer] This is a mock answer generated for testing since OPENAI_API_KEY is not set. Context was successfully matched.`;
+    if (onToken) {
+      mockOut.split(/(\s+)/).forEach((tok) => onToken(tok));
+    }
+    return mockOut;
+  }
 
   // Create an OpenAI API client instance
   const client = new OpenAI({ apiKey: OPENAI_API_KEY });

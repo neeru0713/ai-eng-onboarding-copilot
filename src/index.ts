@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cron from "node-cron";
 import { startSlackBot } from "./slack/bot.js";
 import { runIngestion } from "./ingestion/index.js";
+import { startHealthServer } from "./health.js";
 
 dotenv.config();
 
@@ -23,6 +24,13 @@ async function bootstrap() {
     await startSlackBot();
   } catch (err: any) {
     console.error("Failed to start Slack Bot:", err.message);
+  }
+
+  // 2. Start the Health Server (Express GET /health)
+  try {
+    startHealthServer();
+  } catch (err: any) {
+    console.error("Failed to start Health Server:", err.message);
   }
 
   // 2. Schedule Daily Ingestion Cron Job (at midnight: 0 0 * * *)

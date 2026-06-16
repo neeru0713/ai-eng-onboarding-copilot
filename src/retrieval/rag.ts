@@ -3,8 +3,70 @@ import { BM25Search } from "./bm25Search.js";
 import { rerank } from "./reranker.js";
 import { buildPrompt } from "../generation/promptBuilder.js";
 import { generateAnswer } from "../generation/llmClient.js";
+import { LRUCache } from "lru-cache";
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
 
 let bm25Instance: BM25Search | null = null;
+
+// Initialize the LRU cache with 24 hours TTL
+const cache = new LRUCache<string, any>({
+  max: 1000,
+  ttl: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+});
+
+let totalQueries = 0;
+let cacheHits = 0;
+
+/**
+ * Returns cache stats (total, hits, and rate) for logging/reporting
+ */
+export function getCacheStats() {
+  return {
+    totalQueries,
+    cacheHits,
+    hitRate: totalQueries > 0 ? (cacheHits / totalQueries) * 100 : 0,
+  };
+}
+
+/**
+ * Reset cache stats for testing/evaluation purposes
+ */
+export function resetCacheStats() {
+  totalQueries = 0;
+  cacheHits = 0;
+  cache.clear();
+}
+
+/**
+ * Computes SHA-256 hash of query + repo to use as cache key
+ */
+function getCacheKey(query: string, repo: string): string {
+  return crypto.createHash("sha256").update(`${query}:${repo}`).digest("hex");
+}
+
+/**
+ * Appends the latency metric to the JSONL log file
+ */
+function logLatency(data: { query: string; latencyMs: number; cacheHit: boolean; retrievedChunks: string[] }) {
+  try {
+    const logDir = path.join(process.cwd(), "logs");
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    const logPath = path.join(logDir, "rag-latency.jsonl");
+    const entry = JSON.stringify({
+      query: data.query,
+      latencyMs: data.latencyMs,
+      cacheHit: data.cacheHit,
+      retrievedChunks: data.retrievedChunks,
+    }) + "\n";
+    fs.appendFileSync(logPath, entry);
+  } catch (err: any) {
+    console.error("Failed to write latency log:", err.message);
+  }
+}
 
 /**
  * Gets or initializes the singleton instance of BM25Search.
@@ -32,16 +94,47 @@ export async function getBM25(): Promise<BM25Search> {
  * 4. Generates a final answer using the top 5 chunks as context.
  * 
  * @param query The user's question.
+ * @param onToken Optional callback function to simulate streamed token output.
+ * @param repo Optional repository filter.
  * @returns An object containing the generated answer and the source chunks used.
  */
-export async function queryRAG(query: string, onToken?: (tok: string) => void) {
+export async function queryRAG(query: string, onToken?: (tok: string) => void, repo?: string) {
+  const startTime = Date.now();
+  const activeRepo = repo || process.env.GITHUB_REPO || "unknown-repo";
+  const cacheKey = getCacheKey(query, activeRepo);
+
+  totalQueries++;
+
+  // Check LRU Cache
+  if (cache.has(cacheKey)) {
+    cacheHits++;
+    const cachedResult = cache.get(cacheKey)!;
+    console.log(`[RAG Cache Hit] Key: ${cacheKey} | Query: "${query}" | Repo: "${activeRepo}" | Hit rate: ${getCacheStats().hitRate.toFixed(2)}%`);
+    
+    if (onToken) {
+      cachedResult.answer.split(/(\s+)/).forEach((tok: string) => onToken(tok));
+    }
+
+    const latencyMs = Date.now() - startTime;
+    logLatency({
+      query,
+      latencyMs,
+      cacheHit: true,
+      retrievedChunks: cachedResult.sources.map((s: any) => s.file_path),
+    });
+
+    return cachedResult;
+  }
+
+  console.log(`[RAG Cache Miss] Query: "${query}" | Repo: "${activeRepo}"`);
+
   // Get initialized BM25 instance
   const bm25 = await getBM25();
 
-  // Run searches in parallel
+  // Run searches in parallel, filtered by repo
   const [vres, bres] = await Promise.all([
-    vectorSearch(query, 20),
-    bm25.search(query, 20),
+    vectorSearch(query, 20, activeRepo),
+    bm25.search(query, 20, activeRepo),
   ]);
 
   // Merge candidates by ID
@@ -95,8 +188,21 @@ export async function queryRAG(query: string, onToken?: (tok: string) => void) {
     },
   );
 
-  return {
+  const result = {
     answer,
     sources: top5,
   };
+
+  // Cache final results
+  cache.set(cacheKey, result);
+
+  const latencyMs = Date.now() - startTime;
+  logLatency({
+    query,
+    latencyMs,
+    cacheHit: false,
+    retrievedChunks: top5.map((s) => s.file_path),
+  });
+
+  return result;
 }
